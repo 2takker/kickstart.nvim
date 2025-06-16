@@ -102,13 +102,16 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
+-- Force language to be in english
+vim.cmd 'language en_UK'
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -200,6 +203,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+-- Detect if .py file is opened and add a ruler at specified linewidth
+vim.api.nvim_create_autocmd('BufRead', {
+  group = vim.api.nvim_create_augroup('detect_py_file', { clear = true }),
+  desc = 'Add a colorcolumn for python files.',
+  pattern = { '*.py' },
+  callback = function()
+    vim.cmd 'set cc=80'
   end,
 })
 
@@ -661,6 +674,42 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                pycodestyle = {
+                  enabled = true,
+                  ignore = { 'E203', 'W503' },
+                },
+                flake8 = {
+                  enabled = false,
+                },
+                pyflakes = {
+                  enabled = false,
+                },
+                pylint = {
+                  enabled = false,
+                },
+                autopep8 = {
+                  enabled = false,
+                },
+                yapf = {
+                  enabled = false,
+                },
+              },
+            },
+          },
+        },
+        ruff = {
+          init_options = {
+            settings = {
+              lineLength = 79,
+              organizeImports = true,
+              fixAll = true,
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -758,7 +807,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { lsp_format = 'first' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -964,12 +1013,20 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+
+    { -- Comment out lines/blocks
+      'numToStr/Comment.nvim',
+      opts = {
+        -- add any options here
+      },
+    },
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -1017,6 +1074,9 @@ require('lazy').setup({
       task = '📌',
       lazy = '💤 ',
     },
+  },
+  git = {
+    timeout = 300,
   },
 })
 
