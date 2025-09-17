@@ -688,33 +688,33 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                pycodestyle = {
-                  enabled = true,
-                  ignore = { 'E203', 'W503' },
-                },
-                flake8 = {
-                  enabled = false,
-                },
-                pyflakes = {
-                  enabled = false,
-                },
-                pylint = {
-                  enabled = false,
-                },
-                autopep8 = {
-                  enabled = false,
-                },
-                yapf = {
-                  enabled = false,
-                },
-              },
-            },
-          },
-        },
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         pycodestyle = {
+        --           enabled = true,
+        --           ignore = { 'E203', 'W503' },
+        --         },
+        --         flake8 = {
+        --           enabled = false,
+        --         },
+        --         pyflakes = {
+        --           enabled = false,
+        --         },
+        --         pylint = {
+        --           enabled = false,
+        --         },
+        --         autopep8 = {
+        --           enabled = false,
+        --         },
+        --         yapf = {
+        --           enabled = false,
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
         ruff = {
           -- init_options = {
           --   settings = {
